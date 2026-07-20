@@ -1221,6 +1221,11 @@ function swapPreviewImage(imageEl, src, alt){
     requestAnimationFrame(() => imageEl.classList.remove('swap-out'));
   }, 140);
 }
+function getRarityTileCard(rarity){
+  const imageEl = document.querySelector(`[data-rarity-tile-image="${rarity}"]`);
+  const cardId = imageEl && imageEl.dataset.cardId;
+  return cardId ? byId(cardId) : null;
+}
 function updateRarityPreview(code, rarity=null, pinned=false){
   const imageEl = $('#rarityPreviewImage');
   const titleEl = $('#rarityPreviewTitle');
@@ -1234,7 +1239,7 @@ function updateRarityPreview(code, rarity=null, pinned=false){
     subEl.textContent = 'Hover a rarity to preview a matching card example. Click a rarity to pin it.';
     statusEl.textContent = 'Set art';
   } else {
-    const card = sampleCardForSetRarity(code, rarity);
+    const card = getRarityTileCard(rarity) || sampleCardForSetRarity(code, rarity);
     if(!card) return;
     swapPreviewImage(imageEl, card.image, `${card.name} · ${rarity}`);
     imageEl.classList.remove('is-boxart');
@@ -1266,6 +1271,7 @@ function initRarityCardHoverFlip(code){
         if(!document.body.contains(imageEl)) return;
         imageEl.src = card.image;
         imageEl.alt = `${card.name} · ${rarity}`;
+        imageEl.dataset.cardId = card.id;
         requestAnimationFrame(() => imageEl.classList.remove('swap-out'));
       }, 190);
     };
@@ -1425,7 +1431,7 @@ function renderSetOverview(){
       <small><i style="background:${RARITY_COLOR[r]}"></i>${r}</small>
       <b>${rar[r]}</b>
       <span>${pct(rar[r],total)}% of this set</span>
-      <div class="rarity-focus-card-stage" data-tilt-card><img data-rarity-tile-image="${r}" src="${card.image}" alt="${esc(card.name)} · ${r}"></div>
+      <div class="rarity-focus-card-stage" data-tilt-card><img data-rarity-tile-image="${r}" data-card-id="${card.id}" src="${card.image}" alt="${esc(card.name)} · ${r}"></div>
     </article>`;
   }).join('');
   $('#setOverview').innerHTML = `
