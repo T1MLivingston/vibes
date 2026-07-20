@@ -665,9 +665,13 @@ button{cursor:pointer}
 .rarity-focus-card-stage.is-clickable{cursor:pointer}
 
 .rarity-preview-stage{
-  min-height:470px!important;
-  height:470px;
-  padding:26px!important;
+  aspect-ratio:2.5/3.5!important;
+  width:100%;
+  max-width:380px;
+  height:auto!important;
+  min-height:0!important;
+  margin:0 auto;
+  padding:16px!important;
   transition:transform .22s ease,box-shadow .22s ease;
   cursor:pointer;
 }
@@ -733,12 +737,21 @@ button{cursor:pointer}
   display:grid;
   gap:12px;
   overflow:hidden;
+  cursor:pointer;
+  transition:transform .16s ease,box-shadow .16s ease;
 }
+.whizburb-game:not(.is-fullscreen):hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow2);
+}
+.whizburb-game.is-fullscreen{cursor:default}
+.whizburb-game .whizburb-button,
+.whizburb-game .whizburb-option{cursor:pointer}
 .whizburb-game h3{margin:0;font-size:30px;letter-spacing:-.04em}
 .whizburb-game > p{margin:0;color:#5f7484;line-height:1.45;font-weight:700}
 .whizburb-stage{
-  min-height:460px;
-  height:460px;
+  min-height:520px;
+  height:520px;
   padding:24px;
   border-radius:22px;
   background:linear-gradient(180deg,#14283f,#0d1725);
@@ -772,7 +785,7 @@ button{cursor:pointer}
 .whizburb-result.is-visible{display:grid}
 .whizburb-result b{font-size:21px;letter-spacing:-.03em}
 .whizburb-result span{color:#5f7484;line-height:1.4;font-weight:700}
-.whizburb-button{width:100%;justify-content:center}
+.whizburb-button{width:auto;min-width:200px;justify-content:center;margin:0 auto}
 .games-side-by-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}
 .memory-showcase-card{
   display:grid;
@@ -787,8 +800,8 @@ button{cursor:pointer}
 .memory-showcase-card:hover{transform:translateY(-2px)}
 .memory-showcase-title{font-size:26px;font-weight:900;letter-spacing:-.03em;margin:0}
 .memory-showcase-stage{
-  min-height:460px;
-  height:460px;
+  min-height:520px;
+  height:520px;
   border-radius:22px;
   background:linear-gradient(180deg,#14283f,#0d1725);
   display:grid;
@@ -802,7 +815,7 @@ button{cursor:pointer}
 
 .memory-modal{position:fixed;inset:0;background:rgba(7,16,26,.75);backdrop-filter:blur(14px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.2s ease;z-index:75;padding:20px}
 .memory-modal.open{opacity:1;pointer-events:auto}
-.memory-modal-card{width:min(1280px,95vw);max-height:calc(100vh - 40px);overflow:auto;background:white;border-radius:28px;box-shadow:var(--shadow2);padding:32px;position:relative;display:grid;gap:18px}
+.memory-modal-card{width:min(1040px,92vw);max-height:calc(100vh - 40px);overflow:auto;background:white;border-radius:28px;box-shadow:var(--shadow2);padding:30px;position:relative;display:grid;gap:16px}
 .memory-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-right:40px}
 .memory-head h3{margin:0;font-size:26px;letter-spacing:-.03em}
 .memory-stats{display:flex;gap:12px;font-weight:850;color:#3e586a;font-size:14px;white-space:nowrap}
@@ -860,6 +873,7 @@ button{cursor:pointer}
   overflow-y:auto;
 }
 .whizburb-game.is-fullscreen > *{width:100%;max-width:520px}
+.whizburb-game.is-fullscreen > .whizburb-button{width:auto;min-width:200px;max-width:none}
 .whizburb-game.is-fullscreen .eyebrow{color:#9fb7c8;text-align:center}
 .whizburb-game.is-fullscreen h3{color:#fff;text-align:center}
 .whizburb-game.is-fullscreen > p{color:#c9d8e3;text-align:center}
@@ -873,7 +887,6 @@ button{cursor:pointer}
 }
 
 @media (max-width:1100px){
-  .rarity-preview-stage{height:440px;min-height:440px!important}
   .special-showcase-card .special-rotator-image{max-height:400px!important}
 }
 @media (max-width:720px){
@@ -883,7 +896,7 @@ button{cursor:pointer}
   .set-inline-brand{align-items:flex-start}
   .set-inline-logo{width:92px;height:66px}
   .rarity-breakdown-main .rarity-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .rarity-preview-stage{height:350px;min-height:350px!important}
+  .rarity-preview-stage{max-width:280px}
   .special-showcase-card .special-rotator-image{max-height:340px!important}
   .promo-blog-link{width:100%;text-align:center;margin-left:0}
   .whizburb-stage{height:440px;min-height:440px}
@@ -1195,20 +1208,15 @@ function swapPreviewImage(imageEl, src, alt){
     imageEl.alt = alt;
     return;
   }
-  imageEl.classList.add('swap-out');
   const token = `${Date.now()}-${Math.random()}`;
   imageEl.dataset.swapToken = token;
-  const preload = new Image();
-  preload.onload = preload.onerror = () => {
+  imageEl.classList.add('swap-out');
+  setTimeout(() => {
     if(imageEl.dataset.swapToken !== token) return;
-    setTimeout(() => {
-      if(imageEl.dataset.swapToken !== token) return;
-      imageEl.src = src;
-      imageEl.alt = alt;
-      requestAnimationFrame(() => imageEl.classList.remove('swap-out'));
-    }, 90);
-  };
-  preload.src = src;
+    imageEl.src = src;
+    imageEl.alt = alt;
+    requestAnimationFrame(() => imageEl.classList.remove('swap-out'));
+  }, 140);
 }
 function updateRarityPreview(code, rarity=null, pinned=false){
   const imageEl = $('#rarityPreviewImage');
@@ -1217,11 +1225,10 @@ function updateRarityPreview(code, rarity=null, pinned=false){
   const statusEl = $('#rarityPreviewStatus');
   if(!imageEl || !titleEl || !subEl || !statusEl) return;
   if(!rarity){
-    const sampleCard = byId(SET_SAMPLES[code]);
-    swapPreviewImage(imageEl, sampleCard.image, `${sampleCard.name} · ${SET_INFO[code].name}`);
+    swapPreviewImage(imageEl, SET_IMAGE_URLS[code], `${SET_INFO[code].name} box art`);
     titleEl.textContent = SET_INFO[code].name;
-    subEl.textContent = 'Cycling Common through Epic. Hover to pause, click a rarity to pin it.';
-    statusEl.textContent = 'Featured card';
+    subEl.textContent = 'Hover a rarity to preview a matching card example. Click a rarity to pin it.';
+    statusEl.textContent = 'Set art';
   } else {
     const card = sampleCardForSetRarity(code, rarity);
     if(!card) return;
@@ -1230,20 +1237,6 @@ function updateRarityPreview(code, rarity=null, pinned=false){
     subEl.textContent = `${rarity} card from ${SET_INFO[code].name}${pinned ? ' · pinned' : ''}`;
     statusEl.textContent = `${rarity} example`;
   }
-}
-function stopRarityPreviewAutoCycle(){
-  clearInterval(window.__rarityPreviewAutoTimer);
-  window.__rarityPreviewAutoTimer = null;
-}
-function startRarityPreviewAutoCycle(code){
-  stopRarityPreviewAutoCycle();
-  const rarities = ['Common','Uncommon','Rare','Epic'];
-  let stepIndex = 0;
-  window.__rarityPreviewAutoTimer = setInterval(() => {
-    if(state.setPreviewPins[code] || state.previewHover) return;
-    updateRarityPreview(code, rarities[stepIndex % rarities.length], false);
-    stepIndex++;
-  }, 2800);
 }
 function clearRarityTileRotators(){
   (window.__rarityTileCleanups || []).forEach(fn => fn());
@@ -1280,17 +1273,14 @@ function initRarityCardHoverFlip(code){
 
 function initSetOverviewInteractions(code){
   const pinned = state.setPreviewPins[code] || null;
-  state.previewHover = false;
   updateRarityPreview(code, pinned, !!pinned);
   $$('#setOverview .rarity-focus').forEach(card => {
     const rarity = card.dataset.rarity;
     if(pinned && pinned === rarity) card.classList.add('is-pinned');
     card.addEventListener('mouseenter', () => {
-      state.previewHover = true;
       updateRarityPreview(code, rarity, state.setPreviewPins[code] === rarity);
     });
     card.addEventListener('mouseleave', () => {
-      state.previewHover = false;
       const active = state.setPreviewPins[code] || null;
       updateRarityPreview(code, active, !!active);
     });
@@ -1303,7 +1293,6 @@ function initSetOverviewInteractions(code){
     });
   });
   initRarityCardHoverFlip(code);
-  startRarityPreviewAutoCycle(code);
 }
 
 function initNav(){
@@ -1423,7 +1412,6 @@ function renderSetOverview(){
   const rar = info.rarity;
   const setImage = SET_IMAGE_URLS[code];
   const setLogo = SET_LOGO_URLS[code];
-  const setSampleCard = byId(SET_SAMPLES[code]);
   const bar = ['Common','Uncommon','Rare','Epic'].map(r=>`<span title="${r}: ${rar[r]}" style="width:${rar[r]/total*100}%;background:${RARITY_COLOR[r]}"></span>`).join('');
   const legend = ['Common','Uncommon','Rare','Epic'].map(r=>`<span><i style="background:${RARITY_COLOR[r]}"></i>${r}: <b>${rar[r]}</b></span>`).join('');
   const rarityCards = ['Common','Uncommon','Rare','Epic'].map(r => {
@@ -1451,8 +1439,8 @@ function renderSetOverview(){
         <div class="rarity-focus-grid">${rarityCards}</div>
       </div>
       <div class="rarity-preview-panel">
-        <div class="rarity-preview-head"><small>Preview</small><span class="rarity-preview-status" id="rarityPreviewStatus">Featured card</span></div>
-        <div class="rarity-preview-stage" id="rarityPreviewStage" data-tilt-card><img id="rarityPreviewImage" src="${setSampleCard.image}" alt="${esc(setSampleCard.name)} · ${esc(info.name)}"></div>
+        <div class="rarity-preview-head"><small>Preview</small><span class="rarity-preview-status" id="rarityPreviewStatus">Set art</span></div>
+        <div class="rarity-preview-stage" id="rarityPreviewStage" data-tilt-card><img id="rarityPreviewImage" src="${setImage}" alt="${esc(info.name)} box art"></div>
         <div class="rarity-preview-caption"><b id="rarityPreviewTitle">${info.name}</b><span id="rarityPreviewSub">Hover a rarity to preview a matching card example. Click a rarity to pin it.</span></div>
       </div>
     </div>`;
@@ -1621,12 +1609,8 @@ function initWizbirbGame(){
     // the player exits explicitly (backdrop click / Escape)
   };
 
-  button.onclick = () => {
-    if(timer){
-      stopShuffle();
-      return;
-    }
-
+  const startShuffle = () => {
+    if(timer) return;
     resultEl.classList.remove('is-visible');
     button.textContent = 'Stop the shuffle';
     button.classList.add('is-running');
@@ -1641,10 +1625,19 @@ function initWizbirbGame(){
     autoStopTimer = setTimeout(stopShuffle, 3000);
   };
 
+  button.onclick = (e) => {
+    e.stopPropagation();
+    if(timer){ stopShuffle(); return; }
+    startShuffle();
+  };
+
   gameEl.addEventListener('click', e => {
-    if(e.target !== gameEl) return;
-    if(timer) stopShuffle();
-    exitFullscreen();
+    if(e.target === gameEl){
+      if(timer) stopShuffle();
+      exitFullscreen();
+      return;
+    }
+    if(!timer) startShuffle();
   });
   document.addEventListener('keydown', e => {
     if(e.key !== 'Escape' || !gameEl.classList.contains('is-fullscreen')) return;
