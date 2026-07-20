@@ -617,11 +617,7 @@ button{cursor:pointer}
   height:82px;
   flex:0 0 auto;
   object-fit:contain;
-  padding:5px;
-  border-radius:18px;
-  background:linear-gradient(180deg,#fff,#f4fbff);
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
+  filter:drop-shadow(0 8px 14px rgba(17,39,57,.16));
 }
 .set-inline-brand .meta{min-width:0}
 
@@ -659,11 +655,19 @@ button{cursor:pointer}
   transform:translateX(-12px) rotate(-2deg) scale(.985);
 }
 .rarity-focus-card-stage.is-clickable{cursor:pointer}
+.rarity-focus-card-stage.is-back img{object-fit:cover;border-radius:10px}
+.rarity-focus-card-stage.is-flipping img{transform:rotateY(90deg)}
 
 .rarity-preview-stage{
   min-height:470px!important;
   height:470px;
   padding:28px!important;
+  transition:transform .22s ease,box-shadow .22s ease;
+  cursor:pointer;
+}
+.rarity-preview-stage:hover{
+  transform:translateY(-5px) scale(1.012);
+  box-shadow:0 18px 30px rgba(17,39,57,.14);
 }
 .rarity-preview-stage img{
   width:100%;
@@ -688,6 +692,7 @@ button{cursor:pointer}
   max-width:min(100%,360px)!important;
   max-height:460px!important;
   object-fit:contain!important;
+  filter:none!important;
 }
 .special-title-row{align-items:center!important}
 .promo-blog-link{
@@ -705,11 +710,11 @@ button{cursor:pointer}
 
 .explorer-feature-heading{min-height:auto!important;align-items:center!important}
 .search-mascot{
-  width:60px;
-  height:60px;
+  width:120px;
+  height:120px;
   flex:0 0 auto;
   object-fit:contain;
-  transform:rotate(3deg);
+  transform:scaleX(-1) rotate(-3deg);
   filter:drop-shadow(0 8px 14px rgba(17,39,57,.16));
 }
 .explorer-layout{
@@ -728,8 +733,8 @@ button{cursor:pointer}
 .whizburb-game h3{margin:0;font-size:30px;letter-spacing:-.04em}
 .whizburb-game > p{margin:0;color:#5f7484;line-height:1.45;font-weight:700}
 .whizburb-stage{
-  min-height:390px;
-  height:390px;
+  min-height:540px;
+  height:540px;
   padding:8px;
   border-radius:22px;
   background:linear-gradient(180deg,#14283f,#0d1725);
@@ -752,8 +757,7 @@ button{cursor:pointer}
   transform:translateY(10px) rotate(2deg) scale(.97);
 }
 .whizburb-result{
-  min-height:78px;
-  display:grid;
+  display:none;
   gap:4px;
   align-content:start;
   padding:12px 14px;
@@ -761,9 +765,32 @@ button{cursor:pointer}
   background:#f4faff;
   border:1px solid var(--line);
 }
+.whizburb-result.is-visible{display:grid}
 .whizburb-result b{font-size:21px;letter-spacing:-.03em}
 .whizburb-result span{color:#5f7484;line-height:1.4;font-weight:700}
 .whizburb-button{width:100%;justify-content:center}
+.memory-launch-btn{width:100%;justify-content:center;margin-top:2px}
+
+.memory-modal{position:fixed;inset:0;background:rgba(7,16,26,.75);backdrop-filter:blur(14px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.2s ease;z-index:75;padding:20px}
+.memory-modal.open{opacity:1;pointer-events:auto}
+.memory-modal-card{width:min(640px,100%);max-height:calc(100vh - 40px);overflow:auto;background:white;border-radius:28px;box-shadow:var(--shadow2);padding:26px;position:relative;display:grid;gap:14px}
+.memory-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-right:40px}
+.memory-head h3{margin:0;font-size:26px;letter-spacing:-.03em}
+.memory-stats{display:flex;gap:12px;font-weight:850;color:#3e586a;font-size:14px;white-space:nowrap}
+.memory-status{color:#5f7484;font-weight:700;font-size:14px;line-height:1.4}
+.memory-status.is-won{color:#1c8a63}
+.memory-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.memory-tile{aspect-ratio:2.5/3.5;border-radius:12px;cursor:pointer;position:relative;perspective:600px;background:none;border:0;padding:0}
+.memory-tile-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .35s ease}
+.memory-tile.is-flipped .memory-tile-inner,.memory-tile.is-matched .memory-tile-inner{transform:rotateY(180deg)}
+.memory-tile-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;overflow:hidden;display:grid;place-items:center}
+.memory-tile-back{background:linear-gradient(135deg,#1c3350,#0f1a29);color:#7091ab;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.memory-tile-back img{width:100%;height:100%;object-fit:cover}
+.memory-tile-front{transform:rotateY(180deg);background:#eef6fa;padding:4px;border:1px solid var(--line)}
+.memory-tile-front img{width:100%;height:100%;object-fit:contain}
+.memory-tile.is-matched{opacity:.5}
+.memory-restart-btn{justify-self:start}
+@media (max-width:560px){.memory-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.memory-modal-card{padding:18px}}
 .whizburb-option-strip{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -834,7 +861,7 @@ button{cursor:pointer}
   .rarity-preview-stage{height:350px;min-height:350px!important}
   .special-showcase-card .special-rotator-image{max-height:340px!important}
   .promo-blog-link{width:100%;text-align:center;margin-left:0}
-  .whizburb-stage{height:340px;min-height:340px}
+  .whizburb-stage{height:440px;min-height:440px}
 }
 
 </style>
@@ -949,19 +976,32 @@ button{cursor:pointer}
       <aside class="panel whizburb-game" id="whizburbGame">
         <div class="eyebrow">Mini game</div>
         <h3>Which Wizbirb are you?</h3>
-        <p>Start the shuffle, then click stop. Your Wizbirb will reveal itself.</p>
+        <button class="btn btn-primary whizburb-button" id="whizburbButton">Start the shuffle</button>
         <div class="whizburb-stage" id="whizburbStage">
           <img id="whizburbImage" alt="Wizbirb result">
         </div>
-        <div class="whizburb-result">
-          <b id="whizburbTitle">Ready to shuffle</b>
-          <span id="whizburbText">Four Wizbirbs are waiting in the huddle.</span>
+        <div class="whizburb-result" id="whizburbResult">
+          <b id="whizburbTitle"></b>
+          <span id="whizburbText"></span>
         </div>
-        <button class="btn btn-primary whizburb-button" id="whizburbButton">Start the shuffle</button>
         <div class="whizburb-option-strip" id="whizburbOptions" aria-label="Possible Wizbirb results"></div>
+        <button class="btn btn-secondary memory-launch-btn" id="memoryLaunchBtn">🧠 Play the card memory game</button>
       </aside>
     </div>
   </section>
+
+  <div class="memory-modal" id="memoryModal" aria-hidden="true">
+    <div class="memory-modal-card">
+      <button class="modal-close" id="memoryClose" aria-label="Close">×</button>
+      <div class="memory-head">
+        <h3>Card memory match</h3>
+        <div class="memory-stats"><span id="memoryTurns">0 turns</span><span id="memoryTimer">0:00</span></div>
+      </div>
+      <div class="memory-status" id="memoryStatus">Find every matching pair. One card has no match — watch out for it.</div>
+      <div class="memory-grid" id="memoryGrid"></div>
+      <button class="btn btn-secondary memory-restart-btn" id="memoryRestartBtn">Shuffle a new board</button>
+    </div>
+  </div>
 
   <footer class="footer">Built from the supplied VIBES card-library snapshot and official public card art. This page focuses on the 546-card base checklist.</footer>
 </main>
@@ -1002,6 +1042,7 @@ const SET_TOTALS = {"Eth":200,"Lotl":151,"Bvp":195};
 const SET_IMAGE_URLS = {Bvp:'https://cdn.prod.website-files.com/64aa957da446d8dc44869f81/6a5c5668186a3fba41806b9f_vibes_birb_box.png',Lotl:'https://cdn.prod.website-files.com/64aa957da446d8dc44869f81/6a5c5668d5be781812421582_vibes_lil_box.png',Eth:'https://cdn.prod.website-files.com/64aa957da446d8dc44869f81/6a5c5668186a3fba41806b8d_vibes_eth_box.png'};
 window.SET_IMAGE_URLS = SET_IMAGE_URLS;
 const SET_LOGO_URLS = {Eth:'https://cdn.prod.website-files.com/64aa957da446d8dc44869f81/6a5d3320891ff56ef52bc756_logos_ETH_logo.jpg',Lotl:'https://cdn.prod.website-files.com/64aa957da446d8dc44869f81/6a5d3320e35f7d1443849ccb_logos_lil_logo.jpg',Bvp:'https://cdn.prod.website-files.com/64aa957da446d8dc44869f81/6a5d332062117e576045c010_logos_bp_logo.jpg'};
+const CARD_BACK_URL = 'https://cdn.prod.website-files.com/64aa957da446d8dc44869f81/6a5e016eb51bb53a2e65c96b_card%20back.png';
 const PROMO_CARDS = [
   {title:'Pengu Promo', image:'https://sotstpzsdfuyhdyikekz.supabase.co/storage/v1/render/image/public/productImages/vibes/penguarcticfoilpromo.png?width=1280&resize=contain&quality=80'},
   {title:'To the Moon Promo', image:'https://sotstpzsdfuyhdyikekz.supabase.co/storage/v1/render/image/public/userPfps/inventory-product-images/16241/1782397516152-gyhx5i1ew3q-logselectionboosterpack--2-.png?width=1280&resize=contain&quality=80'},
@@ -1094,10 +1135,11 @@ function updateRarityPreview(code, rarity=null, pinned=false){
   const statusEl = $('#rarityPreviewStatus');
   if(!imageEl || !titleEl || !subEl || !statusEl) return;
   if(!rarity){
-    swapPreviewImage(imageEl, SET_LOGO_URLS[code], `${SET_INFO[code].name} set logo`);
+    const sampleCard = byId(SET_SAMPLES[code]);
+    swapPreviewImage(imageEl, sampleCard.image, `${sampleCard.name} · ${SET_INFO[code].name}`);
     titleEl.textContent = SET_INFO[code].name;
     subEl.textContent = 'Hover a rarity to preview a matching card example. Click a rarity to pin it.';
-    statusEl.textContent = 'Set logo';
+    statusEl.textContent = 'Featured card';
   } else {
     const card = sampleCardForSetRarity(code, rarity);
     if(!card) return;
@@ -1138,6 +1180,41 @@ function startRarityTileRotators(code){
     return () => stageEl.removeEventListener('click', advance);
   }).filter(Boolean);
 }
+function initRarityCardFlips(){
+  if(!CARD_BACK_URL) return;
+  const rarities = ['Common','Uncommon','Rare','Epic'];
+  const images = rarities.map(r => document.querySelector(`[data-rarity-tile-image="${r}"]`)).filter(Boolean);
+  if(!images.length) return;
+  images.forEach(img => {
+    img.dataset.frontSrc = img.getAttribute('src');
+    img.src = CARD_BACK_URL;
+    img.closest('.rarity-focus-card-stage')?.classList.add('is-back');
+  });
+  const flipOne = (img, delay) => {
+    setTimeout(() => {
+      const stage = img.closest('.rarity-focus-card-stage');
+      if(!stage || !stage.classList.contains('is-back')) return;
+      stage.classList.add('is-flipping');
+      setTimeout(() => {
+        if(img.dataset.frontSrc){ img.src = img.dataset.frontSrc; }
+        stage.classList.remove('is-back');
+      }, 200);
+      setTimeout(() => stage.classList.remove('is-flipping'), 420);
+    }, delay);
+  };
+  const grid = document.querySelector('#setOverview .rarity-focus-grid');
+  if(!grid){ images.forEach((img,i) => flipOne(img, i * 320)); return; }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        images.forEach((img,i) => flipOne(img, i * 320));
+        observer.disconnect();
+      }
+    });
+  }, {threshold:0.35});
+  observer.observe(grid);
+}
+
 function initSetOverviewInteractions(code){
   tiltCardElement($('#rarityPreviewStage'));
   const pinned = state.setPreviewPins[code] || null;
@@ -1278,6 +1355,7 @@ function renderSetOverview(){
   const rar = info.rarity;
   const setImage = SET_IMAGE_URLS[code];
   const setLogo = SET_LOGO_URLS[code];
+  const setSampleCard = byId(SET_SAMPLES[code]);
   const bar = ['Common','Uncommon','Rare','Epic'].map(r=>`<span title="${r}: ${rar[r]}" style="width:${rar[r]/total*100}%;background:${RARITY_COLOR[r]}"></span>`).join('');
   const legend = ['Common','Uncommon','Rare','Epic'].map(r=>`<span><i style="background:${RARITY_COLOR[r]}"></i>${r}: <b>${rar[r]}</b></span>`).join('');
   const rarityCards = ['Common','Uncommon','Rare','Epic'].map(r => {
@@ -1305,13 +1383,14 @@ function renderSetOverview(){
         <div class="rarity-focus-grid">${rarityCards}</div>
       </div>
       <div class="rarity-preview-panel">
-        <div class="rarity-preview-head"><small>Preview</small><span class="rarity-preview-status" id="rarityPreviewStatus">Set logo</span></div>
-        <div class="rarity-preview-stage" id="rarityPreviewStage" data-tilt-card><img id="rarityPreviewImage" src="${setLogo}" alt="${esc(info.name)} set logo"></div>
+        <div class="rarity-preview-head"><small>Preview</small><span class="rarity-preview-status" id="rarityPreviewStatus">Featured card</span></div>
+        <div class="rarity-preview-stage" id="rarityPreviewStage" data-tilt-card><img id="rarityPreviewImage" src="${setSampleCard.image}" alt="${esc(setSampleCard.name)} · ${esc(info.name)}"></div>
         <div class="rarity-preview-caption"><b id="rarityPreviewTitle">${info.name}</b><span id="rarityPreviewSub">Hover a rarity to preview a matching card example. Click a rarity to pin it.</span></div>
       </div>
     </div>`;
   $$('#setOverview .rarity-focus-card-stage').forEach(tiltCardElement);
   initSetOverviewInteractions(code);
+  initRarityCardFlips();
 }
 
 function renderFilterPills(){
@@ -1424,15 +1503,17 @@ function initWizbirbGame(){
   const gameEl = $('#whizburbGame');
   const button = $('#whizburbButton');
   const imageEl = $('#whizburbImage');
+  const resultEl = $('#whizburbResult');
   const titleEl = $('#whizburbTitle');
   const textEl = $('#whizburbText');
   const optionHost = $('#whizburbOptions');
-  if(!gameEl || !button || !imageEl || !titleEl || !textEl || !optionHost) return;
+  if(!gameEl || !button || !imageEl || !resultEl || !titleEl || !textEl || !optionHost) return;
 
   const items = WIZBIRB_IDS.map(byId).filter(Boolean);
   if(!items.length) return;
   let currentIndex = Math.floor(Math.random() * items.length);
   let timer = null;
+  let autoStopTimer = null;
 
   optionHost.innerHTML = items.map((card,index) => `<div class="whizburb-option ${index===currentIndex?'active':''}" data-wiz-option="${index}" title="${esc(card.name)}"><img src="${card.image}" alt="${esc(card.name)}"></div>`).join('');
 
@@ -1447,6 +1528,7 @@ function initWizbirbGame(){
     }, 60);
     $$('[data-wiz-option]').forEach((el,i) => el.classList.toggle('active', i === currentIndex));
     if(final){
+      resultEl.classList.add('is-visible');
       titleEl.textContent = `You are ${card.name}!`;
       textEl.textContent = WIZBIRB_PROFILES[card.id] || 'The huddle has chosen your Wizbirb.';
     }
@@ -1456,6 +1538,8 @@ function initWizbirbGame(){
 
   const stopShuffle = () => {
     if(!timer) return;
+    clearTimeout(autoStopTimer);
+    autoStopTimer = null;
     clearInterval(timer);
     timer = null;
     renderCard(currentIndex, true);
@@ -1471,8 +1555,7 @@ function initWizbirbGame(){
       return;
     }
 
-    titleEl.textContent = 'The huddle is shuffling…';
-    textEl.textContent = 'Click stop when the right Wizbirb flashes into view.';
+    resultEl.classList.remove('is-visible');
     button.textContent = 'Stop the shuffle';
     button.classList.add('is-running');
     gameEl.classList.add('is-fullscreen');
@@ -1483,10 +1566,138 @@ function initWizbirbGame(){
       while(next === currentIndex && items.length > 1) next = Math.floor(Math.random() * items.length);
       renderCard(next, false);
     }, 125);
+    autoStopTimer = setTimeout(stopShuffle, 3000);
   };
 
   gameEl.addEventListener('click', e => { if(e.target === gameEl && timer) stopShuffle(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && timer) stopShuffle(); });
+
+  const launchBtn = $('#memoryLaunchBtn');
+  if(launchBtn) launchBtn.onclick = () => { if(timer) stopShuffle(); openMemoryGame(); };
+}
+
+function formatMemoryTime(totalSeconds){
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
+
+function buildMemoryBoard(){
+  const setCode = SET_ORDER[Math.floor(Math.random() * SET_ORDER.length)];
+  const pool = CARDS.filter(c => c.setCode === setCode);
+  const chosen = [...pool].sort(() => Math.random() - 0.5).slice(0, 8);
+  const paired = chosen.slice(0, 7);
+  const lone = chosen[7];
+  let tiles = [];
+  paired.forEach(card => { tiles.push({card}); tiles.push({card}); });
+  tiles.push({card: lone});
+  tiles = tiles.map(t => ({...t, sortKey: Math.random()})).sort((a,b) => a.sortKey - b.sortKey);
+  return {setCode, tiles};
+}
+
+function initMemoryGame(){
+  const modal = $('#memoryModal');
+  const closeBtn = $('#memoryClose');
+  const restartBtn = $('#memoryRestartBtn');
+  const gridEl = $('#memoryGrid');
+  const statusEl = $('#memoryStatus');
+  const turnsEl = $('#memoryTurns');
+  const timerEl = $('#memoryTimer');
+  if(!modal || !closeBtn || !restartBtn || !gridEl || !statusEl || !turnsEl || !timerEl) return;
+
+  let tiles = [];
+  let flipped = [];
+  let matchedCount = 0;
+  let turns = 0;
+  let locked = false;
+  let startTime = null;
+  let tickTimer = null;
+
+  const updateStats = () => { turnsEl.textContent = `${turns} turn${turns===1?'':'s'}`; };
+  const stopTicking = () => { if(tickTimer){ clearInterval(tickTimer); tickTimer = null; } };
+  const startTicking = () => {
+    startTime = Date.now();
+    stopTicking();
+    tickTimer = setInterval(() => {
+      timerEl.textContent = formatMemoryTime(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
+  };
+
+  const tileFaceHtml = (t) => `
+    <button class="memory-tile" type="button" aria-label="Memory card">
+      <div class="memory-tile-inner">
+        <div class="memory-tile-face memory-tile-back">${CARD_BACK_URL ? `<img src="${CARD_BACK_URL}" alt="">` : 'VIBES'}</div>
+        <div class="memory-tile-face memory-tile-front"><img src="${t.card.image}" alt="${esc(t.card.name)}"></div>
+      </div>
+    </button>`;
+
+  const newBoard = () => {
+    stopTicking();
+    const board = buildMemoryBoard();
+    tiles = board.tiles;
+    flipped = [];
+    matchedCount = 0;
+    turns = 0;
+    locked = false;
+    startTime = null;
+    timerEl.textContent = '0:00';
+    updateStats();
+    statusEl.classList.remove('is-won');
+    statusEl.textContent = `${SET_INFO[board.setCode].name} · find every matching pair. One card has no match — watch out for it.`;
+    gridEl.innerHTML = tiles.map(tileFaceHtml).join('');
+    [...gridEl.querySelectorAll('.memory-tile')].forEach((tileEl, index) => {
+      tileEl.onclick = () => onTileClick(index, tileEl);
+    });
+  };
+
+  function onTileClick(index, tileEl){
+    if(locked) return;
+    if(tileEl.classList.contains('is-flipped') || tileEl.classList.contains('is-matched')) return;
+    if(!startTime) startTicking();
+    tileEl.classList.add('is-flipped');
+    flipped.push({index, tileEl});
+    if(flipped.length === 2){
+      turns++;
+      updateStats();
+      const [a,b] = flipped;
+      if(tiles[a.index].card.id === tiles[b.index].card.id){
+        a.tileEl.classList.add('is-matched');
+        b.tileEl.classList.add('is-matched');
+        flipped = [];
+        matchedCount++;
+        if(matchedCount === 7){
+          stopTicking();
+          statusEl.classList.add('is-won');
+          statusEl.textContent = `Solved in ${turns} turn${turns===1?'':'s'} and ${timerEl.textContent}!`;
+        }
+      } else {
+        locked = true;
+        setTimeout(() => {
+          a.tileEl.classList.remove('is-flipped');
+          b.tileEl.classList.remove('is-flipped');
+          flipped = [];
+          locked = false;
+        }, 800);
+      }
+    }
+  }
+
+  const close = () => {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    stopTicking();
+  };
+
+  closeBtn.onclick = close;
+  restartBtn.onclick = newBoard;
+  modal.addEventListener('click', e => { if(e.target === modal) close(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) close(); });
+
+  window.openMemoryGame = () => {
+    newBoard();
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+  };
 }
 
 function initControls(){
@@ -1513,7 +1724,7 @@ function initControls(){
 }
 
 function init(){
-  initNav(); initHero(); initHeroSetCards(); initCollectors(); renderRarityCheckers(); renderSetTabs(); renderSetOverview(); renderFilterPills(); renderCards(); initWizbirbGame(); initControls();
+  initNav(); initHero(); initHeroSetCards(); initCollectors(); renderRarityCheckers(); renderSetTabs(); renderSetOverview(); renderFilterPills(); renderCards(); initMemoryGame(); initWizbirbGame(); initControls();
 }
 init();
 </script>
