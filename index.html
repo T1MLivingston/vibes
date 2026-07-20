@@ -114,6 +114,11 @@ button{cursor:pointer}
 .filter-columns{display:contents}
 .filter-block{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
 .filter-block > span{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:#5c7485;font-weight:900;white-space:nowrap}
+.filter-block > span.filter-label-set{color:#2f6fac}
+.filter-block > span.filter-label-rarity{color:#c07a1f}
+.filter-block > span.filter-label-sort{color:#1f9a76}
+.filter-divider{width:1px;align-self:stretch;background:var(--line);flex:0 0 auto;min-height:24px}
+@media (max-width:1000px){.filter-divider{display:none}}
 .pills{display:flex;flex-wrap:wrap;gap:5px}.pill{border:1px solid var(--line);background:white;color:#466072;padding:6px 9px;border-radius:999px;font-weight:800;box-shadow:var(--shadow);font-size:12px;white-space:nowrap}.pill.active,.pill:hover{background:#13263d;color:white;border-color:#13263d}
 .results-line{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:14px;color:#5c7182;padding:2px 2px 0}
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
@@ -658,9 +663,6 @@ button{cursor:pointer}
   transform:translateX(-12px) rotate(-2deg) scale(.985);
 }
 .rarity-focus-card-stage.is-clickable{cursor:pointer}
-.rarity-focus-card-stage.is-back img{object-fit:cover;border-radius:10px}
-.rarity-focus-card-stage.is-flip-animating img{transition:transform .5s cubic-bezier(.4,0,.2,1)!important}
-.rarity-focus-card-stage.is-flipping img{transform:rotateY(90deg)}
 
 .rarity-preview-stage{
   min-height:470px!important;
@@ -737,7 +739,7 @@ button{cursor:pointer}
 .whizburb-stage{
   min-height:460px;
   height:460px;
-  padding:8px;
+  padding:24px;
   border-radius:22px;
   background:linear-gradient(180deg,#14283f,#0d1725);
   display:grid;
@@ -785,7 +787,8 @@ button{cursor:pointer}
 .memory-showcase-card:hover{transform:translateY(-2px)}
 .memory-showcase-title{font-size:26px;font-weight:900;letter-spacing:-.03em;margin:0}
 .memory-showcase-stage{
-  min-height:280px;
+  min-height:460px;
+  height:460px;
   border-radius:22px;
   background:linear-gradient(180deg,#14283f,#0d1725);
   display:grid;
@@ -793,19 +796,19 @@ button{cursor:pointer}
   padding:20px;
   overflow:hidden;
 }
-.memory-showcase-stage img{max-width:min(64%,220px);border-radius:14px;box-shadow:0 18px 30px rgba(0,0,0,.35)}
+.memory-showcase-stage img{max-width:min(84%,340px);max-height:90%;border-radius:16px;box-shadow:0 20px 34px rgba(0,0,0,.4)}
 .memory-showcase-copy{color:#5f7484;font-weight:700;line-height:1.4;font-size:14px}
-@media (max-width:820px){.games-side-by-side{grid-template-columns:1fr}}
+@media (max-width:820px){.games-side-by-side{grid-template-columns:1fr}.memory-showcase-stage{height:auto;min-height:360px}}
 
 .memory-modal{position:fixed;inset:0;background:rgba(7,16,26,.75);backdrop-filter:blur(14px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.2s ease;z-index:75;padding:20px}
 .memory-modal.open{opacity:1;pointer-events:auto}
-.memory-modal-card{width:min(640px,100%);max-height:calc(100vh - 40px);overflow:auto;background:white;border-radius:28px;box-shadow:var(--shadow2);padding:26px;position:relative;display:grid;gap:14px}
+.memory-modal-card{width:min(1280px,95vw);max-height:calc(100vh - 40px);overflow:auto;background:white;border-radius:28px;box-shadow:var(--shadow2);padding:32px;position:relative;display:grid;gap:18px}
 .memory-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-right:40px}
 .memory-head h3{margin:0;font-size:26px;letter-spacing:-.03em}
 .memory-stats{display:flex;gap:12px;font-weight:850;color:#3e586a;font-size:14px;white-space:nowrap}
 .memory-status{color:#5f7484;font-weight:700;font-size:14px;line-height:1.4}
 .memory-status.is-won{color:#1c8a63}
-.memory-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.memory-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
 .memory-tile{aspect-ratio:2.5/3.5;border-radius:12px;cursor:pointer;position:relative;perspective:600px;background:none;border:0;padding:0}
 .memory-tile-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .35s ease}
 .memory-tile.is-flipped .memory-tile-inner,.memory-tile.is-matched .memory-tile-inner{transform:rotateY(180deg)}
@@ -1005,10 +1008,12 @@ button{cursor:pointer}
       </div>
       <div class="filter-shell">
         <div class="filter-columns">
-          <div class="filter-block"><span>Set</span><div class="pills" id="setPills"></div></div>
-          <div class="filter-block"><span>Rarity</span><div class="pills" id="rarityPills"></div></div>
+          <div class="filter-block"><span class="filter-label filter-label-set">Set</span><div class="pills" id="setPills"></div></div>
+          <span class="filter-divider" aria-hidden="true"></span>
+          <div class="filter-block"><span class="filter-label filter-label-rarity">Rarity</span><div class="pills" id="rarityPills"></div></div>
         </div>
-        <div class="filter-block"><span>Sort</span><div class="pills" id="sortPills"></div></div>
+        <span class="filter-divider" aria-hidden="true"></span>
+        <div class="filter-block"><span class="filter-label filter-label-sort">Sort</span><div class="pills" id="sortPills"></div></div>
       </div>
       <div class="results-line"><span id="resultCount"></span><span>Tap any card for details.</span></div>
       <div class="card-grid" id="cardGrid"></div>
@@ -1162,7 +1167,9 @@ function pct(n,total){ return ((n/total)*100).toFixed(1); }
 
 
 function sampleCardForSetRarity(setCode, rarity){
-  return CARDS.find(c => c.setCode === setCode && c.rarity === rarity) || CARDS.find(c => c.setCode === setCode) || byId(SET_SAMPLES[setCode]);
+  const pool = CARDS.filter(c => c.setCode === setCode && c.rarity === rarity);
+  if(pool.length) return pool[Math.floor(Math.random() * pool.length)];
+  return CARDS.find(c => c.setCode === setCode) || byId(SET_SAMPLES[setCode]);
 }
 function tiltCardElement(el){
   if(!el || el.dataset.tiltReady === '1') return;
@@ -1213,7 +1220,7 @@ function updateRarityPreview(code, rarity=null, pinned=false){
     const sampleCard = byId(SET_SAMPLES[code]);
     swapPreviewImage(imageEl, sampleCard.image, `${sampleCard.name} · ${SET_INFO[code].name}`);
     titleEl.textContent = SET_INFO[code].name;
-    subEl.textContent = 'Hover a rarity to preview a matching card example. Click a rarity to pin it.';
+    subEl.textContent = 'Cycling Common through Epic. Hover to pause, click a rarity to pin it.';
     statusEl.textContent = 'Featured card';
   } else {
     const card = sampleCardForSetRarity(code, rarity);
@@ -1223,6 +1230,20 @@ function updateRarityPreview(code, rarity=null, pinned=false){
     subEl.textContent = `${rarity} card from ${SET_INFO[code].name}${pinned ? ' · pinned' : ''}`;
     statusEl.textContent = `${rarity} example`;
   }
+}
+function stopRarityPreviewAutoCycle(){
+  clearInterval(window.__rarityPreviewAutoTimer);
+  window.__rarityPreviewAutoTimer = null;
+}
+function startRarityPreviewAutoCycle(code){
+  stopRarityPreviewAutoCycle();
+  const rarities = ['Common','Uncommon','Rare','Epic'];
+  let stepIndex = 0;
+  window.__rarityPreviewAutoTimer = setInterval(() => {
+    if(state.setPreviewPins[code] || state.previewHover) return;
+    updateRarityPreview(code, rarities[stepIndex % rarities.length], false);
+    stepIndex++;
+  }, 2800);
 }
 function clearRarityTileRotators(){
   (window.__rarityTileCleanups || []).forEach(fn => fn());
@@ -1234,86 +1255,42 @@ function initRarityCardHoverFlip(code){
   window.__rarityTileCleanups = rarities.map(rarity => {
     const imageEl = document.querySelector(`[data-rarity-tile-image="${rarity}"]`);
     const stageEl = imageEl?.closest('.rarity-focus-card-stage');
-    const cardEl = stageEl?.closest('.rarity-focus');
     const pool = CARDS.filter(c => c.setCode === code && c.rarity === rarity);
-    if(!imageEl || !stageEl || !cardEl || !pool.length) return null;
+    if(!imageEl || !stageEl || pool.length < 2) return null;
 
-    const cleanups = [];
     let index = Math.max(0, pool.findIndex(c => c.image === imageEl.getAttribute('src')));
-
-    if(pool.length > 1){
-      const advance = (e) => {
-        e.stopPropagation();
-        if(stageEl.classList.contains('is-back')) return;
-        index = (index + 1) % pool.length;
-        const card = pool[index];
-        imageEl.dataset.frontSrc = card.image;
-        imageEl.classList.add('swap-out');
-        setTimeout(() => {
-          if(!document.body.contains(imageEl)) return;
-          imageEl.src = card.image;
-          imageEl.alt = `${card.name} · ${rarity}`;
-          requestAnimationFrame(() => imageEl.classList.remove('swap-out'));
-        }, 190);
-      };
-      stageEl.classList.add('is-clickable');
-      stageEl.title = CARD_BACK_URL ? 'Hover to reveal, click to see another card' : 'Click to see another card';
-      stageEl.addEventListener('click', advance);
-      cleanups.push(() => stageEl.removeEventListener('click', advance));
-    }
-
-    if(CARD_BACK_URL){
-      imageEl.dataset.frontSrc = imageEl.getAttribute('src');
-      imageEl.src = CARD_BACK_URL;
-      stageEl.classList.add('is-back');
-      let flipTimers = [];
-      const clearFlipTimers = () => { flipTimers.forEach(clearTimeout); flipTimers = []; };
-      const showFront = () => {
-        if(!stageEl.classList.contains('is-back')) return;
-        clearFlipTimers();
-        stageEl.classList.add('is-flip-animating');
-        requestAnimationFrame(() => stageEl.classList.add('is-flipping'));
-        flipTimers.push(setTimeout(() => {
-          imageEl.src = imageEl.dataset.frontSrc;
-          stageEl.classList.remove('is-back');
-        }, 190));
-        flipTimers.push(setTimeout(() => stageEl.classList.remove('is-flipping'), 240));
-        flipTimers.push(setTimeout(() => stageEl.classList.remove('is-flip-animating'), 480));
-      };
-      const showBack = () => {
-        if(stageEl.classList.contains('is-back')) return;
-        clearFlipTimers();
-        stageEl.classList.add('is-flip-animating');
-        requestAnimationFrame(() => stageEl.classList.add('is-flipping'));
-        flipTimers.push(setTimeout(() => {
-          imageEl.src = CARD_BACK_URL;
-          stageEl.classList.add('is-back');
-        }, 190));
-        flipTimers.push(setTimeout(() => stageEl.classList.remove('is-flipping'), 240));
-        flipTimers.push(setTimeout(() => stageEl.classList.remove('is-flip-animating'), 480));
-      };
-      cardEl.addEventListener('mouseenter', showFront);
-      cardEl.addEventListener('mouseleave', showBack);
-      cleanups.push(() => {
-        clearFlipTimers();
-        cardEl.removeEventListener('mouseenter', showFront);
-        cardEl.removeEventListener('mouseleave', showBack);
-      });
-    }
-
-    return () => cleanups.forEach(fn => fn());
+    const advance = (e) => {
+      e.stopPropagation();
+      index = (index + 1) % pool.length;
+      const card = pool[index];
+      imageEl.classList.add('swap-out');
+      setTimeout(() => {
+        if(!document.body.contains(imageEl)) return;
+        imageEl.src = card.image;
+        imageEl.alt = `${card.name} · ${rarity}`;
+        requestAnimationFrame(() => imageEl.classList.remove('swap-out'));
+      }, 190);
+    };
+    stageEl.classList.add('is-clickable');
+    stageEl.title = 'Click to see another card';
+    stageEl.addEventListener('click', advance);
+    return () => stageEl.removeEventListener('click', advance);
   }).filter(Boolean);
 }
 
 function initSetOverviewInteractions(code){
-  tiltCardElement($('#rarityPreviewStage'));
   const pinned = state.setPreviewPins[code] || null;
+  state.previewHover = false;
   updateRarityPreview(code, pinned, !!pinned);
   $$('#setOverview .rarity-focus').forEach(card => {
     const rarity = card.dataset.rarity;
     if(pinned && pinned === rarity) card.classList.add('is-pinned');
-    card.addEventListener('mouseenter', () => updateRarityPreview(code, rarity, state.setPreviewPins[code] === rarity));
+    card.addEventListener('mouseenter', () => {
+      state.previewHover = true;
+      updateRarityPreview(code, rarity, state.setPreviewPins[code] === rarity);
+    });
     card.addEventListener('mouseleave', () => {
+      state.previewHover = false;
       const active = state.setPreviewPins[code] || null;
       updateRarityPreview(code, active, !!active);
     });
@@ -1326,6 +1303,7 @@ function initSetOverviewInteractions(code){
     });
   });
   initRarityCardHoverFlip(code);
+  startRarityPreviewAutoCycle(code);
 }
 
 function initNav(){
